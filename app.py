@@ -33,8 +33,8 @@ def generate_input_selection(input_list, message, error_message):
     try:
         for key, value in input_list.items():
             print(str(key) + ": " + str(value))
-        identifier_key = int(input(message))
-        if input_list.get(identifier_key) is None:
+        identifier_key = input(message)
+        if not identifier_key.isnumeric() and input_list.get(identifier_key) is None:
             raise ValueError(error_message)
         return identifier_key
     except ValueError as error:
@@ -45,7 +45,7 @@ def get_orientation_angle_key(or_type):
     angle_key = generate_input_selection(ORIENTATION_ANGLE_LIST_MASTER, "Please input the angle of rotation: ",
                                          "Please enter a valid angle of rotation!!")
     if or_type == 2:
-        angle_key = ANTI_CLOCKWISE_MAPPING_TO_CLOCKWISE[angle_key]
+        angle_key = ANTI_CLOCKWISE_MAPPING_TO_CLOCKWISE[int(angle_key)]
     return angle_key
 
 
@@ -68,8 +68,8 @@ def get_file_input():
         file_details = get_file_details_formatted_for_display()
         for key, value in file_details.items():
             print(str(key) + ": " + value)
-        file_key = int(input("Please input the number corresponding to the file name: "))
-        if file_details.get(file_key) is None:
+        file_key = input("Please input the number corresponding to the file name: ")
+        if not file_key.isnumeric() and file_details.get(file_key) is None:
             raise ValueError("Please enter a valid image number from the above list!!")
         return file_details.get(int(file_key))
     except ValueError as error:
@@ -148,7 +148,7 @@ if __name__ == "__main__":
         orientation_angle_key = get_orientation_angle_key(orientation_type_key)
 
         # master method which handles the image rotation
-        rotated_file_path = index(image_to_rotate, orientation_angle_key)
+        rotated_file_path = index(image_to_rotate, int(orientation_angle_key))
 
         print("Image rotated successfully. You can see the file here: " + rotated_file_path)
     except ValueError as e:
